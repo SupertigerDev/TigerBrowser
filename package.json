@@ -9,6 +9,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "electron": "^2.0.3",
     "tldjs": "^2.3.1"
   }
 }
