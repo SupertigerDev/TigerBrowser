@@ -2,9 +2,19 @@ const tldjs = require('tldjs');
 
 const { tldExists } = tldjs;
 var back = document.getElementById("navigateBack"),
-    forward = document.getElementById("navigateForward");
-    view = document.getElementById("view")
-    omni = document.getElementById("addressBarInput")
+    forward = document.getElementById("navigateForward"),
+    view = document.getElementById("view"),
+    omni = document.getElementById("addressBarInput"),
+    requestedURL = "tiger:newtab";
+    view.style.backgroundColor = "rgb(46, 46, 46)";
+
+
+
+
+    $(document).ready(function(){
+        view.loadURL(__dirname + "/customPages/newtab/index.html")
+        omni.value = ""
+    })
 
 
 function reloadView () {
@@ -42,7 +52,17 @@ function failLoadPage(event) {
 }
 
 function updateAddressBar(event) {
+    if (requestedURL.toLowerCase().startsWith("tiger:")){
+        if (requestedURL.trim().toLowerCase() == "tiger:newtab"){
+            omni.value = "";
+            return;
+        }
+        omni.value = requestedURL;
+        return;
+    }
+    view.style.backgroundColor = "white";
     omni.value = event.url;
+    
 }
 
 function updateURL (event) {  
@@ -57,14 +77,23 @@ function updateURL (event) {
             view.loadURL(val);
             omni.value = val;
         } else {
+            if (val.toLowerCase().startsWith("tiger:")){
+                var pageToLoad = __dirname + "/customPages/" + val.substring(6).toLowerCase() +"/index.html"
+                view.loadURL(pageToLoad);
+                omni.value = val;  
+                requestedURL = val  
+                return;
+            }
             if (tldExists(val) == false) {
                 val = urlencode(val)
                 val = "https://www.google.com/search?q="+ val
                 view.loadURL(val);
                 omni.value = val;
+                requestedURL = val
             }else{
                 view.loadURL('http://'+ val);
                 omni.value = 'http://'+ val;
+                requestedURL = 'http://'+ val
             }
 
         }

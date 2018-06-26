@@ -1,0 +1,62 @@
+body {
+    font-family: 'Roboto', sans-serif;
+    background-color: rgb(46, 46, 46);
+    color: rgb(179, 179, 179);
+}
+
+.container {
+    margin: 50px;
+}
+
+.title {
+    display: block;
+    text-align: center;
+    font-size: 50px;
+    font-weight: bold;
+    margin-bottom: 30px;
+}
+
+.subtitle {
+    display: block;
+    text-align: center;
+    font-size: 25px;
+}
+.search{
+    margin: auto;
+    text-align: center;
+}
+
+.searchWith {
+    background-color: rgba(75, 75, 75, 0.274);
+    display: inline-block;
+    vertical-align: top;
+    text-align: center;
+    margin-top: 20px;
+    margin: 10px;
+    transition: 0.2s;
+    padding: 15px;
+    background-repeat: no-repeat;
+    background-size: 80%;
+    width: 50px;
+    height: 50px;
+
+}
+.searchWith:hover {
+    background-color: rgba(75, 75, 75, 0.705);
+}
+.searchWithGoogle {
+    background-image: url("../img/GoogleLogo.png");
+    background-position-y: 7px;
+    background-position-x: 9px;
+}
+.searchWithYouTube {
+    background-image: url("../img/YouTubeLogo.png");
+    background-position-y: 17px;
+    background-position-x: 9px; 
+}
+.selectedGoogle {
+    background-color: rgba(43, 128, 255, 0.589);
+}
+.selectedYouTube {
+    background-color: rgba(255, 28, 28, 0.589);
+}
