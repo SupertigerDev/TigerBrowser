@@ -1,0 +1,51 @@
+<html>
+
+<head>
+    <script>
+        delete window.module;
+        const {
+            ipcRenderer
+        } = require('electron');
+    </script>
+    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js" onload="window.$ = window.jQuery = module.exports;"></script>
+    <script src="js/titleBarControl.js"></script>
+    <link rel="stylesheet" type="text/css" href="css/main.css" />
+    <link href="css/icon.css" rel="stylesheet">
+</head>
+
+<body>
+    <div class="header">
+        <div class="windowBar">
+            <div class="windowDragBar">Node Web Browser Alpha 0.350</div>
+            <div class="windowButtons">
+                <div class="windowMinButton windowButton" onclick="minWindow()">-</div>
+                <div class="windowMaxResButton windowButton" onclick="maxWindow()">□</div>
+                <div class="windowCloseButton windowButton" onclick="closeWindow()">✕</div>
+            </div>
+        </div>
+        <div class="navigationBar">
+            <div class="navigatePage">
+                <div class="navigateButtons" id="navigateBack">
+                    <i class="material-icons icon">
+                        arrow_back_ios
+                    </i>
+                </div>
+                <div class="navigateButtons" id="navigateForward">
+                    <i class="material-icons icon">
+                        arrow_forward_ios
+                    </i>
+                </div>
+            </div>
+            <div class="addressBar">
+                <input type="text" id="addressBarInput" placeholder="Search for 'Cats' or enter the URL thing">
+            </div>
+        </div>
+    </div>
+    <div class="webPage">
+        <webview id="view" src="https://www.google.com/"></webview>
+    </div>
+</body>
+<script src="js/browerControl.js"></script>
+
+</html>
