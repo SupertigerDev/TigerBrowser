@@ -7,6 +7,7 @@ var back = document.getElementById("navigateBack"),
     forward = document.getElementById("navigateForward"),
     view,
     omni = document.getElementById("addressBarInput"),
+    tabsPanel = document.getElementById("tabsPanel"),
     requestedURL = "tiger:newtab";
 
 
@@ -24,7 +25,9 @@ $(document).ready(function () {
 
     //view.addEventListener('did-stop-loading', function(event){console.log(event)})
 
-    //view.addEventListener('did-finish-load', function(event){console.log(event)})
+    view.addEventListener('did-finish-load', function (event) {
+        finishLoadingPage()
+    })
 
     view.addEventListener('did-fail-load', function (event) {
         failLoadPage(event)
@@ -46,6 +49,15 @@ function backView() {
 function forwardView() {
     view.goForward();
 }
+
+function getTitle() {
+    return view.getTitle()
+}
+
+function getFavicon(link) {
+    return "https://www.google.com/s2/favicons?domain=" + link;
+}
+
 function openDevTools() {
     view.openDevTools();
 }
@@ -62,6 +74,12 @@ forward.onclick = function () {
 }
 
 
+function finishLoadingPage(event) {
+    var favicon = getFavicon(view.getURL())
+    var title = getTitle();
+
+    tabsPanel.innerHTML = '<div class="tab"><img class="tabFavicon" src = "'+favicon+'"><div class="tabTitle">'+title+'</div></div>'
+}
 
 
 function failLoadPage(event) {
@@ -76,14 +94,14 @@ function updateAddressBar(event) {
 
 
 
-        if (event.url.startsWith(urlencodePath("file:///" + __dirname.replace(/\\/g,"/") + "/customPages"))){
-            if (event.url.includes("newtab")){
-                omni.value = ""
-                return;
-            }
-            omni.value = requestedURL;
-            return
+    if (event.url.startsWith(urlencodePath("file:///" + __dirname.replace(/\\/g, "/") + "/customPages"))) {
+        if (event.url.includes("newtab")) {
+            omni.value = ""
+            return;
         }
+        omni.value = requestedURL;
+        return
+    }
 
     view.style.backgroundColor = "white";
     omni.value = event.url;
@@ -139,6 +157,7 @@ function urlencode(str) {
         return symbols[m];
     });
 }
+
 function urlencodePath(str) {
     str = str.split(' ').join('%20');
 
