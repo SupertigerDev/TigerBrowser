@@ -1,46 +1,67 @@
 const tldjs = require('tldjs');
 
-const { tldExists } = tldjs;
+const {
+    tldExists
+} = tldjs;
 var back = document.getElementById("navigateBack"),
     forward = document.getElementById("navigateForward"),
-    view = document.getElementById("view"),
+    view,
     omni = document.getElementById("addressBarInput"),
     requestedURL = "tiger:newtab";
-    view.style.backgroundColor = "rgb(46, 46, 46)";
 
 
 
 
-    $(document).ready(function(){
-        view.loadURL(__dirname + "/customPages/newtab/index.html")
-        omni.value = ""
+$(document).ready(function () {
+    $(".webPage").html('<webview id="view" src="' + __dirname + "/customPages/newtab/index.html" + '"></webview>')
+
+    view = document.getElementById("view")
+
+    view.addEventListener('did-navigate', function (event) {
+        updateAddressBar(event)
+        //openDevTools()
     })
 
+    //view.addEventListener('did-stop-loading', function(event){console.log(event)})
 
-function reloadView () {
+    //view.addEventListener('did-finish-load', function(event){console.log(event)})
+
+    view.addEventListener('did-fail-load', function (event) {
+        failLoadPage(event)
+    })
+
+    omni.value = ""
+
+})
+
+
+function reloadView() {
     view.reload();
 }
 
-function backView () {
-    view.goBack ();
+function backView() {
+    view.goBack();
 }
 
-function forwardView () {
+function forwardView() {
     view.goForward();
 }
+function openDevTools() {
+    view.openDevTools();
+}
 
 
-omni.onkeypress = function(event){updateURL(event)}
-back.onclick = function(){backView();}
-forward.onclick = function(){forwardView();}
+omni.onkeypress = function (event) {
+    updateURL(event)
+}
+back.onclick = function () {
+    backView();
+}
+forward.onclick = function () {
+    forwardView();
+}
 
-view.addEventListener('did-navigate', function(event){updateAddressBar(event)})
 
-//view.addEventListener('did-stop-loading', function(event){console.log(event)})
-
-//view.addEventListener('did-finish-load', function(event){console.log(event)})
-
-view.addEventListener('did-fail-load', function(event){failLoadPage(event)})
 
 
 function failLoadPage(event) {
@@ -52,20 +73,24 @@ function failLoadPage(event) {
 }
 
 function updateAddressBar(event) {
-    if (requestedURL.toLowerCase().startsWith("tiger:")){
-        if (requestedURL.trim().toLowerCase() == "tiger:newtab"){
-            omni.value = "";
-            return;
+
+
+
+        if (event.url.startsWith(urlencodePath("file:///" + __dirname.replace(/\\/g,"/") + "/customPages"))){
+            if (event.url.includes("newtab")){
+                omni.value = ""
+                return;
+            }
+            omni.value = requestedURL;
+            return
         }
-        omni.value = requestedURL;
-        return;
-    }
+
     view.style.backgroundColor = "white";
     omni.value = event.url;
-    
+
 }
 
-function updateURL (event) {  
+function updateURL(event) {
     if (event.keyCode === 13) {
         omni.blur();
         let val = omni.value;
@@ -77,23 +102,23 @@ function updateURL (event) {
             view.loadURL(val);
             omni.value = val;
         } else {
-            if (val.toLowerCase().startsWith("tiger:")){
-                var pageToLoad = __dirname + "/customPages/" + val.substring(6).toLowerCase() +"/index.html"
+            if (val.toLowerCase().startsWith("tiger:")) {
+                var pageToLoad = __dirname + "/customPages/" + val.substring(6).toLowerCase() + "/index.html"
                 view.loadURL(pageToLoad);
-                omni.value = val;  
-                requestedURL = val  
+                omni.value = val;
+                requestedURL = val
                 return;
             }
             if (tldExists(val) == false) {
                 val = urlencode(val)
-                val = "https://www.google.com/search?q="+ val
+                val = "https://www.google.com/search?q=" + val
                 view.loadURL(val);
                 omni.value = val;
                 requestedURL = val
-            }else{
-                view.loadURL('http://'+ val);
-                omni.value = 'http://'+ val;
-                requestedURL = 'http://'+ val
+            } else {
+                view.loadURL('http://' + val);
+                omni.value = 'http://' + val;
+                requestedURL = 'http://' + val
             }
 
         }
@@ -102,13 +127,20 @@ function updateURL (event) {
 
 function urlencode(str) {
     var symbols = {
-       '@': '%40',
-       '%26amp%3B': '%26',
-       '*': '%2A',
-       '+': '%2B',
-       '/': '%2F',
-       '%26lt%3B': '%3C',
-       '%26gt%3B': '%3E'
+        '@': '%40',
+        '%26amp%3B': '%26',
+        '*': '%2A',
+        '+': '%2B',
+        '/': '%2F',
+        '%26lt%3B': '%3C',
+        '%26gt%3B': '%3E'
     };
-    return escape(str).replace(/([@*+/]|%26(amp|lt|gt)%3B)/g, function (m) { return symbols[m]; });
- }
+    return escape(str).replace(/([@*+/]|%26(amp|lt|gt)%3B)/g, function (m) {
+        return symbols[m];
+    });
+}
+function urlencodePath(str) {
+    str = str.split(' ').join('%20');
+
+    return str
+}

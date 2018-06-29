@@ -14,7 +14,9 @@ const fs = require('fs');
 
 app.on('ready', () => {
     let win = new BrowserWindow({
-        frame: false
+        frame: false,
+        height: 600,
+        width: 1000
     });
     win.loadURL(`file://${__dirname}/src/main.html`)
 

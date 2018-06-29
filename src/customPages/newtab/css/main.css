@@ -41,7 +41,7 @@ body {
     height: 50px;
 
 }
-.searchWith:hover {
+.searchWithHover:hover {
     background-color: rgba(75, 75, 75, 0.705);
 }
 .searchWithGoogle {
@@ -49,14 +49,32 @@ body {
     background-position-y: 7px;
     background-position-x: 9px;
 }
+
 .searchWithYouTube {
     background-image: url("../img/YouTubeLogo.png");
     background-position-y: 17px;
     background-position-x: 9px; 
 }
+
 .selectedGoogle {
     background-color: rgba(43, 128, 255, 0.589);
 }
+
 .selectedYouTube {
     background-color: rgba(255, 28, 28, 0.589);
+}
+
+.searchBarContainer{
+    margin-top: 30px;
+}
+
+.searchBar{
+    width: 210px;
+    border: solid 1px rgb(88, 88, 88);
+    padding: 10px;
+    color: rgb(201, 201, 201);
+    font-size: 20px;
+    outline: none;
+    background-color: rgba(82, 151, 255, 0.178);
+    transition: 0.5s;
 }
